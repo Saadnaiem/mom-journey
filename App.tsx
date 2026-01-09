@@ -358,11 +358,16 @@ const App: React.FC = () => {
       {/* 3. PROMINENT JOURNEY STAGES */}
       <section className="bg-emerald-50/20 py-16 px-6 border-b border-gray-100">
         <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-4 mb-10 justify-center md:justify-start">
-              <div className="w-10 h-10 bg-emerald-900 rounded-full flex items-center justify-center text-white shadow-lg shadow-emerald-900/20">
+            <div className="flex items-start gap-4 mb-10 justify-center md:justify-start">
+              <div className="w-10 h-10 bg-emerald-900 rounded-full flex items-center justify-center text-white shadow-lg shadow-emerald-900/20 shrink-0 mt-1">
                 <Map size={20} />
               </div>
-              <h2 className="text-2xl font-serif font-bold gold-gradient-text">{t.stagesTitle}</h2>
+              <div>
+                <h2 className="text-2xl font-serif font-bold gold-gradient-text">{t.stagesTitle}</h2>
+                <p className="text-emerald-900/70 mt-2 text-lg font-medium max-w-3xl leading-relaxed">
+                  {t.stagesDescription}
+                </p>
+              </div>
             </div>
           
           <div className="relative py-12">
