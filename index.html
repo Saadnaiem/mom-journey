@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Al Habib Pharmacy - Mom & Baby Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --emerald-primary: #022c22; /* Very deep emerald */
+        --emerald-secondary: #047857; /* Rich jewel-tone emerald */
+        --emerald-text: #064e3b; /* Readable dark emerald for body */
+        --emerald-light: #ecfdf5;
+        --luxury-gold: #b48a28; /* Deep metallic gold */
+        --luxury-gold-shine: #fcd34d; /* Bright gold highlight */
+        --luxury-white: #ffffff;
+        --cream-bg: #fdfbf7; /* Premium paper feel */
+      }
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--cream-bg);
+        color: var(--emerald-text);
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      .font-serif {
+        font-family: 'Playfair Display', serif;
+      }
+      h1, h2, h3, h4, h5, h6 {
+         color: var(--emerald-primary);
+         letter-spacing: -0.02em;
+         text-shadow: 0 1px 1px rgba(0,0,0,0.05);
+      }
+      
+      .text-emerald { color: var(--emerald-secondary); }
+      .text-gold { color: var(--luxury-gold); }
+      .bg-emerald { background-color: var(--emerald-secondary); }
+      .bg-emerald-dark { background-color: var(--emerald-primary); }
+      
+      /* Shiny Text Effect */
+      .shiny-text {
+        background: linear-gradient(120deg, var(--emerald-primary) 0%, var(--emerald-secondary) 40%, var(--emerald-primary) 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% auto;
+        animation: shine-slow 8s linear infinite;
+        font-weight: 800;
+      }
+      
+      .gold-gradient-text {
+        background: linear-gradient(to right, #b48a28, #fcd34d, #b48a28);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% auto;
+        animation: shine 4s linear infinite;
+        filter: drop-shadow(0 1px 1px rgba(180, 138, 40, 0.2));
+      }
+
+      @keyframes shine-slow {
+        to { background-position: 200% center; }
+      }
+      @keyframes shine {
+        to { background-position: 200% center; }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 8px 32px -4px rgba(6, 78, 59, 0.08);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:hover {
+        transform: translateY(-6px) scale(1.01);
+        border-color: var(--emerald-secondary);
+        box-shadow: 0 24px 48px -12px rgba(6, 78, 59, 0.15);
+      }
+      
+      /* High clarity borders */
+      .border-emerald { border-color: var(--emerald-secondary); }
+      .border-gold { border-color: var(--luxury-gold); }
+
+      .stage-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+      
+      .active-stage-glow {
+        box-shadow: 0 0 0 2px var(--luxury-gold), 0 20px 40px -10px rgba(6, 78, 59, 0.4);
+        border-color: var(--luxury-gold) !important;
+      }
+
+      .checklist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+      }
+
+      @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-reveal {
+        animation: fade-in-up 0.6s ease-out forwards;
+      }
+
+      /* Hide horizontal scrollbar if any */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "jspdf": "https://esm.sh/jspdf@^4.0.0",
+    "qrcode.react": "https://esm.sh/qrcode.react@^4.2.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
