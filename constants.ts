@@ -180,29 +180,70 @@ export const JOURNEY_DATA: Milestone[] = [
     expertTip: "Growing-up milks are fortified with iron and Vitamin D to ensure toddlers meet their daily requirements.",
     clinicalInsight: "The first 3 years are the most rapid period of brain development. DHA and proper nutrition remain vital.",
     checklist: [
-      { id: 's6-nut-1', name: 'Toddler Formula / Growing-Up Milk (Stage 3)', category: 'Toddler Nutrition', description: 'Balanced nutrition for active explorers.' },
-      { id: 's6-nut-2', name: 'Comfort / LF / Goat toddler milk', category: 'Toddler Nutrition', description: 'Digestive support options.' },
-      { id: 's6-nut-3', name: 'Multivitamin syrups or gummies', category: 'Toddler Nutrition', description: 'Tasty supplement support.' },
-      { id: 's6-toil-1', name: 'Kids shampoo', category: 'Toiletries & Personal Care', description: 'Clean hair without tears.' },
-      { id: 's6-toil-2', name: 'Hair detangler sprays', category: 'Toiletries & Personal Care', description: 'Eases combing knots.' },
-      { id: 's6-toil-3', name: 'Kids body wash', category: 'Toiletries & Personal Care', description: 'Fun, gentle cleansing.' },
-      { id: 's6-toil-4', name: 'Moisturizers', category: 'Toiletries & Personal Care', description: 'Daily skin nourishment.' },
-      { id: 's6-toil-5', name: 'Sunscreen', category: 'Toiletries & Personal Care', description: 'Essential outdoor protection.' },
-      { id: 's6-diap-1', name: 'Training pants', category: 'Diapers & Training', description: 'Absorbent underwear for training.' },
-      { id: 's6-diap-2', name: 'Pull-ups', category: 'Diapers & Training', description: 'Easy up/down for independence.' },
-      { id: 's6-diap-3', name: 'Potty seats & accessories', category: 'Diapers & Training', description: 'Tools for toilet success.' },
-      { id: 's6-oral-1', name: 'Kids toothbrushes', category: 'Oral Care', description: 'Soft bristles for young teeth.' },
-      { id: 's6-oral-2', name: 'Fluoride toothpaste', category: 'Oral Care', description: 'Cavity protection formula.' },
-      { id: 's6-learn-1', name: 'Developmental toys', category: 'Learning & Activity', description: 'Stimulates mind and body.' },
-      { id: 's6-learn-2', name: 'Push toys', category: 'Learning & Activity', description: 'Encourages walking and balance.' },
-      { id: 's6-learn-3', name: 'Blocks & puzzles', category: 'Learning & Activity', description: 'Builds problem-solving skills.' },
-      { id: 's6-learn-4', name: 'Outdoor play items', category: 'Learning & Activity', description: 'Promotes physical health.' },
-      { id: 's6-safe-1', name: 'Advanced home safety products', category: 'Safety & Mobility', description: 'Secures busy homes.' },
-      { id: 's6-safe-2', name: 'Toddler car seats', category: 'Safety & Mobility', description: 'Forward-facing safety.' },
-      { id: 's6-safe-3', name: 'Stroller alternatives', category: 'Safety & Mobility', description: 'Lightweight travel options.' },
-      { id: 's6-mom-1', name: 'Energy-boosting supplements', category: 'Ongoing Mom Care', description: 'Vitality for parenting demands.' },
-      { id: 's6-mom-2', name: 'Daily skincare & wellness', category: 'Ongoing Mom Care', description: 'Self-care routines.' },
-      { id: 's6-mom-3', name: 'Relaxation & recovery products', category: 'Ongoing Mom Care', description: 'Stress relief support.' }
+      { id: 's6-milk-1', name: 'Growing-up formula (Stage 3)', category: 'Nutrition & Immunity', description: 'Supports nutritional gaps in picky eaters.' },
+      { id: 's6-nut-1', name: 'Vitamin D & Calcium drops/gummies', category: 'Nutrition & Immunity', description: 'Bone strength for active walkers.' },
+      { id: 's6-nut-2', name: 'Multivitamins with Iron', category: 'Nutrition & Immunity', description: 'Prevents anemia and boosts energy.' },
+      { id: 's6-hyg-1', name: 'Toddler toothbrushes (soft)', category: 'Hygiene & Potty Training', description: 'Introduction to oral care routines.' },
+      { id: 's6-hyg-2', name: 'Fluoride-free / low-fluoride toothpaste', category: 'Hygiene & Potty Training', description: 'Safe for swallowing during learning.' },
+      { id: 's6-hyg-3', name: 'Diapers (Sizes 4-6) / Pull-ups', category: 'Hygiene & Potty Training', description: 'Transitioning to potty independence.' },
+      { id: 's6-hyg-4', name: 'Potty training seats/chairs', category: 'Hygiene & Potty Training', description: 'Comfortable tools for training success.' },
+      { id: 's6-safe-1', name: 'Safety gates & latches', category: 'Safety & Home', description: 'Critical for active explorers.' },
+      { id: 's6-safe-2', name: 'Corner guards', category: 'Safety & Home', description: 'Protects from bumps and falls.' }
     ]
+  }
+]; 
+
+// --- ARABIC DATA PLACEHOLDER ---
+// In a real scenario, this would be fully translated. 
+// For now, we copy the English structure and translate titles to demonstrate the feature.
+export const JOURNEY_DATA_AR: Milestone[] = [
+  {
+    ...JOURNEY_DATA[0],
+    title: "مرحلة ما قبل الحمل",
+    subtitle: "الخصوبة والإعداد",
+    description: "صحتك قبل الحمل هي الأساس لمستقبل طفلك. ركزي على الخصوبة، المخزون الغذائي، والثقافة الصحية.",
+    expertTip: "ابدئي بتناول حمض الفوليك قبل 3 أشهر على الأقل من الحمل لتقليل مخاطر العيوب الخلقية.",
+    clinicalInsight: "تبدأ الخصوبة المثالية بالتوازن الهرموني وكثافة المغذيات الدقيقة.",
+    // Checklist items would be translated here
+  },
+  {
+    ...JOURNEY_DATA[1],
+    title: "مرحلة الحمل المبكر",
+    subtitle: "تطور الجنين والسيطرة على الأعراض",
+    description: "الأسابيع 1-13 حاسمة لتشكل الأعضاء. تركز هذه المرحلة على تخفيف الأعراض ومنع الإرهاق الشديد.",
+    expertTip: "الوجبات الصغيرة والمتكررة ومكملات الزنجبيل يمكن أن تساعد في إدارة غثيان الصباح بفعالية.",
+    clinicalInsight: "تزداد الحاجة للحديد والمغنيسيوم مبكراً لدعم توسع حجم الدم ومنع استنزاف الأم.",
+  },
+  {
+    ...JOURNEY_DATA[2],
+    title: "مرحلة الحمل المتأخر",
+    subtitle: "الراحة والاستعداد للولادة",
+    description: "الثلث الثالث يدور حول دعم الهيكل العظمي، وتجهيز حقيبة المستشفى، وحماية البشرة أثناء تمددها.",
+    expertTip: "جهزي حقيبة المستشفى بحلول الأسبوع 35. لا تنسي كريم اللانولين.",
+    clinicalInsight: "الدعم الضاغط ودعم الحوض مفاتيح لإدارة انزعاج الحمل المتأخر.",
+  },
+  {
+    ...JOURNEY_DATA[3],
+    title: "مرحلة ما بعد الولادة",
+    subtitle: "التعافي، الرضاعة والترابط",
+    description: "الأشهر الستة الأولى تركز على تعافي الأم، وتأسيس روتين الرضاعة، وضمان نظافة وسلامة الطفل.",
+    expertTip: "الترطيب هو محرك إدرار الحليب. احتفظي بزجاجة ماء معك في كل جلسة رضاعة.",
+    clinicalInsight: "فيتامين د ضروري للمواليد حيث لا يتواجد بنسب عالية في حليب الأم بشكل طبيعي.",
+  },
+  {
+    ...JOURNEY_DATA[4],
+    title: "رعاية الرضيع (6-12 شهر)",
+    subtitle: "النمو، الفطام والتطور",
+    description: "مع بدء تناول الأطعمة الصلبة والحبو، تصبح السلامة وأطعمة الفطام هي الأولوية.",
+    expertTip: "أدخلي الحبوب المدعمة بالحديد حيث يبدأ مخزون الحديد الطبيعي للطفل بالنفاذ بعد 6 أشهر.",
+    clinicalInsight: "التسنين يسبب انزعاجاً كبيراً؛ الحلقات المبردة والجل الخالي من السكر هي وسائل آمنة للراحة.",
+  },
+  {
+    ...JOURNEY_DATA[5],
+    title: "رعاية الطفل الدارج (1-3 سنوات)",
+    subtitle: "الاستقلالية والمناعة",
+    description: "يحتاج الدارجون لحليب مخصص ودعم للمناعة. هذه المرحلة تركز أيضاً على نظافة الفم وسلامة المنزل.",
+    expertTip: "حليب النمو مدعم بالحديد وفيتامين د لضمان تلبية احتياجات الدارجين اليومية.",
+    clinicalInsight: "السنوات الثلاث الأولى هي أسرع فترة لنمو الدماغ. DHA والتغذية السليمة تظل حيوية.",
   }
 ];

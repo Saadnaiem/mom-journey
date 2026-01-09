@@ -15,12 +15,20 @@ import {
   Phone,
   Mail,
   AlertCircle,
-  Map
+  Map,
+  ArrowLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Globe
 } from 'lucide-react';
-import { JOURNEY_DATA } from './constants';
+import { JOURNEY_DATA, JOURNEY_DATA_AR } from './constants';
 import { MilestoneId } from './types';
+import { translations } from './locales';
 
 const App: React.FC = () => {
+  const [lang, setLang] = useState<'en' | 'ar'>('en');
+  const [viewMode, setViewMode] = useState<'home' | 'details'>('home');
   const [activeStage, setActiveStage] = useState<MilestoneId>(MilestoneId.PRE_PREGNANCY);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
   const [showQR, setShowQR] = useState(false);
@@ -32,7 +40,10 @@ const App: React.FC = () => {
   const [email, setEmail] = useState('');
   const [showError, setShowError] = useState(false);
 
-  const currentMilestone = JOURNEY_DATA.find(m => m.id === activeStage)!;
+  const t = translations[lang];
+  const isRTL = lang === 'ar';
+  const journeyData = isRTL ? JOURNEY_DATA_AR : JOURNEY_DATA;
+  const currentMilestone = journeyData.find(m => m.id === activeStage)!;
 
   const toggleItem = (itemId: string) => {
     const newSelected = new Set(selectedItems);
@@ -47,8 +58,11 @@ const App: React.FC = () => {
   const downloadPDF = () => {
     if (!mobileNumber.trim()) {
       setShowError(true);
-      const element = document.getElementById('details-form');
-      element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setViewMode('home');
+      setTimeout(() => {
+        const element = document.getElementById('details-form');
+        element?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
       return;
     }
     setShowError(false);
@@ -205,9 +219,18 @@ const App: React.FC = () => {
       const totalPages = (doc as any).internal.getNumberOfPages();
       for (let i = 1; i <= totalPages; i++) {
         doc.setPage(i);
+        
+        // Footer Logo
+        const footerLogoHeight = 10;
+        const footerLogoWidth = footerLogoHeight * logoRatio;
+        doc.addImage(img, 'PNG', 15, 282, footerLogoWidth, footerLogoHeight);
+
+        // Footer Text
         doc.setFontSize(8);
         doc.setTextColor(150, 150, 150);
-        doc.text("Thank you for choosing Al Habib Pharmacy for your journey.", 105, 285, { align: 'center' });
+        doc.text("Dr. Sulaiman Al Habib Medical Group", 105, 286, { align: 'center' });
+        doc.text("Mom & Baby Journey Essentials", 105, 290, { align: 'center' });
+        
         doc.text(`Page ${i} of ${totalPages}`, 195, 290, { align: 'right' });
       }
       
@@ -216,7 +239,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen selection:bg-emerald-100 selection:text-emerald-900 bg-white">
+    <div className="min-h-screen selection:bg-emerald-100 selection:text-emerald-900 bg-white" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* 1. HEADER */}
       <header className="relative pt-12 pb-16 px-6 border-b border-gray-100 bg-white">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start">
@@ -224,32 +247,41 @@ const App: React.FC = () => {
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <img src={logo} alt="Al Habib Pharmacy" className="h-32 w-auto mb-6 object-contain" />
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-extrabold text-emerald tracking-tighter mb-4 leading-tight">
-              Al Habib Pharmacy <br />
-              <span className="shiny-text font-bold">Mom and Baby Journey</span>
+              {isRTL ? 'صيدلية الحبيب' : 'Al Habib Pharmacy'} <br />
+              <span className="shiny-text font-bold">{t.subtitle}</span>
             </h1>
             <p className="text-emerald-900 opacity-80 max-w-xl text-lg font-medium leading-relaxed">
-              Excellence in pharmaceutical care for every stage of your life's most precious journey.
+              {t.tagline}
             </p>
           </div>
 
           {/* Action Buttons */}
           <div className="mt-8 md:mt-0 flex flex-wrap justify-center gap-4">
+             <button 
+              onClick={() => setLang(lang === 'en' ? 'ar' : 'en')} 
+              className="flex items-center gap-2 px-6 py-3 border-2 border-emerald text-emerald rounded-full font-bold text-xs uppercase tracking-widest hover:bg-emerald hover:text-white transition-all whitespace-nowrap group"
+            >
+              <Globe size={18} className="group-hover:rotate-180 transition-transform duration-500" />
+              <span>{lang === 'en' ? 'العربية' : 'English'}</span>
+            </button>
             <button onClick={() => setShowQR(true)} className="flex items-center gap-2 px-6 py-3 border-2 border-emerald text-emerald rounded-full font-bold text-xs uppercase tracking-widest hover:bg-emerald hover:text-white transition-all whitespace-nowrap group">
               <QrCode size={18} className="group-hover:scale-110 transition-transform" />
-              <span>Mobile Portal</span>
+              <span>{t.mobilePortal}</span>
             </button>
             <button 
               onClick={downloadPDF} 
               className={`flex items-center gap-2 px-6 py-3 bg-emerald text-white rounded-full font-bold text-xs uppercase tracking-widest hover:bg-emerald-dark transition-all shadow-xl shadow-emerald-900/20 whitespace-nowrap group`}
             >
               <Printer size={18} className="group-hover:scale-110 transition-transform" />
-              <span>Export List ({selectedItems.size})</span>
+              <span>{t.exportList} ({selectedItems.size})</span>
             </button>
           </div>
         </div>
       </header>
 
       {/* 2. USER DETAILS FORM (MANDATORY FIELDS) */}
+      {viewMode === 'home' && (
+      <>
       <section id="details-form" className="py-12 px-6 bg-white border-b border-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="bg-emerald-50/30 p-8 md:p-12 rounded-[3rem] border border-emerald-100/50">
@@ -258,23 +290,23 @@ const App: React.FC = () => {
                 <User size={20} />
               </div>
               <div>
-                <h3 className="text-2xl font-serif font-bold gold-gradient-text">Personalize Your Journey</h3>
-                <p className="text-xs text-emerald-900 font-bold uppercase tracking-widest">Details will be included in your exported list</p>
+                <h3 className="text-2xl font-serif font-bold gold-gradient-text">{t.personalize}</h3>
+                <p className="text-xs text-emerald-900 font-bold uppercase tracking-widest">{t.detailsHint}</p>
               </div>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
               {/* Mom's Name */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest text-emerald-900 ml-1">Mom's Name</label>
+                <label className="text-xs font-black uppercase tracking-widest text-emerald-900 ml-1">{t.momName}</label>
                 <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-900" size={20} />
+                  <User className={`absolute top-1/2 -translate-y-1/2 text-emerald-900 ${isRTL ? 'right-4' : 'left-4'}`} size={20} />
                   <input 
                     type="text" 
-                    placeholder="Enter full name"
+                    placeholder={t.momNamePlaceholder}
                     value={momName}
                     onChange={(e) => setMomName(e.target.value)}
-                    className="w-full bg-white border-2 border-emerald-100 rounded-2xl py-4 pl-12 pr-4 focus:border-emerald-900 outline-none transition-all font-bold text-lg text-emerald-950 placeholder:text-emerald-900/40"
+                    className={`w-full bg-white border-2 border-emerald-100 rounded-2xl py-4 ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} focus:border-emerald-900 outline-none transition-all font-bold text-lg text-emerald-950 placeholder:text-emerald-900/40`}
                   />
                 </div>
               </div>
@@ -282,39 +314,39 @@ const App: React.FC = () => {
               {/* Mobile Number */}
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-emerald-900 ml-1 flex justify-between">
-                  Mobile Number <span className="text-emerald-600 text-[10px] font-bold">Mandatory*</span>
+                  {t.mobile} <span className="text-emerald-600 text-[10px] font-bold">{t.mandatory}*</span>
                 </label>
                 <div className="relative">
-                  <Phone className={`absolute left-4 top-1/2 -translate-y-1/2 ${showError && !mobileNumber ? 'text-red-600' : 'text-emerald-900'}`} size={20} />
+                  <Phone className={`absolute top-1/2 -translate-y-1/2 ${showError && !mobileNumber ? 'text-red-600' : 'text-emerald-900'} ${isRTL ? 'right-4' : 'left-4'}`} size={20} />
                   <input 
                     type="tel" 
-                    placeholder="e.g. 05XXXXXXX"
+                    placeholder={t.mobilePlaceholder}
                     value={mobileNumber}
                     onChange={(e) => {
                       setMobileNumber(e.target.value);
                       if(e.target.value) setShowError(false);
                     }}
-                    className={`w-full bg-white border-2 rounded-2xl py-4 pl-12 pr-4 outline-none transition-all font-bold text-lg text-emerald-950 placeholder:text-emerald-900/40 ${showError && !mobileNumber ? 'border-red-200 focus:border-red-400 bg-red-50/30' : 'border-emerald-100 focus:border-emerald-900'}`}
+                    className={`w-full bg-white border-2 rounded-2xl py-4 ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} outline-none transition-all font-bold text-lg text-emerald-950 placeholder:text-emerald-900/40 ${showError && !mobileNumber ? 'border-red-200 focus:border-red-400 bg-red-50/30' : 'border-emerald-100 focus:border-emerald-900'}`}
                   />
                 </div>
                 {showError && !mobileNumber && (
                   <p className="text-[10px] text-red-600 font-bold ml-1 flex items-center gap-1">
-                    <AlertCircle size={10} /> Please provide your mobile number to export
+                    <AlertCircle size={10} /> {t.errorMobile}
                   </p>
                 )}
               </div>
 
               {/* Email */}
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase tracking-widest text-emerald-900 ml-1">Email Address</label>
+                <label className="text-xs font-black uppercase tracking-widest text-emerald-900 ml-1">{t.email}</label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-900" size={20} />
+                  <Mail className={`absolute top-1/2 -translate-y-1/2 text-emerald-900 ${isRTL ? 'right-4' : 'left-4'}`} size={20} />
                   <input 
                     type="email" 
-                    placeholder="example@email.com"
+                    placeholder={t.emailPlaceholder}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white border-2 border-emerald-100 rounded-2xl py-4 pl-12 pr-4 focus:border-emerald-900 outline-none transition-all font-bold text-lg text-emerald-950 placeholder:text-emerald-900/40"
+                    className={`w-full bg-white border-2 border-emerald-100 rounded-2xl py-4 ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} focus:border-emerald-900 outline-none transition-all font-bold text-lg text-emerald-950 placeholder:text-emerald-900/40`}
                   />
                 </div>
               </div>
@@ -330,7 +362,7 @@ const App: React.FC = () => {
               <div className="w-10 h-10 bg-emerald-900 rounded-full flex items-center justify-center text-white shadow-lg shadow-emerald-900/20">
                 <Map size={20} />
               </div>
-              <h2 className="text-2xl font-serif font-bold gold-gradient-text">Journey Stages</h2>
+              <h2 className="text-2xl font-serif font-bold gold-gradient-text">{t.stagesTitle}</h2>
             </div>
           
           <div className="relative py-12">
@@ -338,12 +370,16 @@ const App: React.FC = () => {
             <div className="hidden xl:block absolute top-1/2 left-4 right-4 h-0.5 bg-gradient-to-r from-emerald-100 via-emerald-200 to-emerald-100 -translate-y-1/2 rounded-full" />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 relative z-10">
-              {JOURNEY_DATA.map((milestone, idx) => {
+              {journeyData.map((milestone, idx) => {
                 const isEven = idx % 2 === 0;
                 return (
                   <button
                     key={milestone.id}
-                    onClick={() => setActiveStage(milestone.id)}
+                    onClick={() => {
+                      setActiveStage(milestone.id);
+                      setViewMode('details');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                     className={`flex flex-col items-center p-6 rounded-[2.5rem] transition-all duration-500 border-2 text-center group relative ${
                       isEven ? 'xl:-translate-y-8' : 'xl:translate-y-8'
                     } ${
@@ -375,7 +411,7 @@ const App: React.FC = () => {
                     <p className={`text-[10px] font-black uppercase tracking-widest mb-2 ${
                       activeStage === milestone.id ? 'text-emerald-300' : 'text-emerald-700'
                     }`}>
-                      Stage 0{idx + 1}
+                      {t.stagePrefix} 0{idx + 1}
                     </p>
                     <h4 className={`text-sm font-bold tracking-tight leading-tight ${
                       activeStage === milestone.id ? 'text-white' : 'text-black'
@@ -389,27 +425,71 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
+      </>
+      )}
 
       {/* 4. ACTIVE STAGE DETAILS & LIST */}
-      <main className="max-w-7xl mx-auto px-6 py-20">
+      {viewMode === 'details' && (
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        {/* Navigation Header */}
+        <div className="flex items-center justify-between mb-12">
+          <button 
+            onClick={() => setViewMode('home')}
+            className={`flex items-center gap-2 text-emerald-900 font-bold uppercase tracking-widest text-xs hover:text-emerald-600 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
+            {isRTL ? <ChevronRight size={20} /> : <ChevronLeft size={20} />} {t.backToOverview}
+          </button>
+
+          <div className="flex gap-4">
+            {journeyData.findIndex(m => m.id === activeStage) > 0 && (
+              <button 
+                onClick={() => {
+                  const idx = journeyData.findIndex(m => m.id === activeStage);
+                  setActiveStage(journeyData[idx - 1].id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className={`flex items-center gap-3 px-6 py-3 rounded-full border-2 border-emerald-100 text-emerald-900 hover:bg-emerald-50 hover:border-emerald-300 transition-all font-bold uppercase tracking-widest text-xs ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                {isRTL ? <ArrowRight size={18} /> : <ArrowLeft size={18} />}
+                <span>{t.previousStage}</span>
+              </button>
+            )}
+            {journeyData.findIndex(m => m.id === activeStage) < journeyData.length - 1 && (
+              <button 
+                onClick={() => {
+                  const idx = journeyData.findIndex(m => m.id === activeStage);
+                  setActiveStage(journeyData[idx + 1].id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className={`flex items-center gap-3 px-6 py-3 rounded-full bg-emerald-900 text-white hover:bg-emerald-800 transition-all shadow-lg shadow-emerald-900/20 font-bold uppercase tracking-widest text-xs ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                <span>{t.nextStage}</span>
+                {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-12 gap-16">
           
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12">
             <div className="animate-reveal">
-              <h3 className="text-4xl md:text-5xl font-serif font-bold shiny-text mb-6 italic leading-tight">{currentMilestone.subtitle}</h3>
+              <h2 className="text-4xl md:text-5xl font-serif font-extrabold gold-gradient-text mb-4 leading-tight">{currentMilestone.title}</h2>
+              <div className="w-24 h-1.5 bg-emerald-900 rounded-full mb-8"></div>
+              <h3 className="text-2xl text-emerald-900/80 font-medium mb-10 italic">{currentMilestone.subtitle}</h3>
               <p className="text-xl text-emerald-900 font-medium leading-relaxed mb-10 border-l-4 border-gold pl-6">
                 {currentMilestone.description}
               </p>
               
               <div className="space-y-6">
                 <div className="p-10 bg-emerald-dark text-white rounded-[3rem] shadow-xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                  <div className={`absolute top-0 p-4 opacity-10 group-hover:rotate-12 transition-transform ${isRTL ? 'left-0' : 'right-0'}`}>
                     <ShieldCheck size={120} />
                   </div>
                   <div className="flex items-center gap-3 mb-4 text-emerald-300">
                     <ShieldCheck size={28} />
-                    <h5 className="font-bold text-xs uppercase tracking-widest">Clinical Insight</h5>
+                    <h5 className="font-bold text-xs uppercase tracking-widest">{t.clinicalInsight}</h5>
                   </div>
                   <p className="text-lg font-light leading-relaxed italic opacity-90 relative z-10">"{currentMilestone.clinicalInsight}"</p>
                 </div>
@@ -417,7 +497,7 @@ const App: React.FC = () => {
                 <div className="p-10 bg-emerald-50 rounded-[3rem] border border-emerald-100 group">
                   <div className="flex items-center gap-3 mb-4 text-emerald-900">
                     <Stethoscope size={28} />
-                    <h5 className="font-bold text-xs uppercase tracking-widest">Expert Tip</h5>
+                    <h5 className="font-bold text-xs uppercase tracking-widest">{t.expertTip}</h5>
                   </div>
                   <p className="text-lg font-light leading-relaxed italic text-emerald-950 opacity-80">"{currentMilestone.expertTip}"</p>
                 </div>
@@ -428,11 +508,11 @@ const App: React.FC = () => {
           {/* Checklist */}
           <div className="lg:col-span-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-              <h3 className="text-4xl font-serif font-bold gold-gradient-text italic">Curated Essentials</h3>
+              <h3 className="text-4xl font-serif font-bold gold-gradient-text italic">{t.essentialsTitle}</h3>
               <div className="bg-emerald text-white px-6 py-2 rounded-full flex items-center gap-3 shadow-lg shadow-emerald-900/10 border border-emerald-400/30">
                  <span className="w-2 h-2 rounded-full bg-emerald-bright animate-pulse"></span>
                  <span className="text-xs font-black uppercase tracking-widest">
-                  {currentMilestone.checklist.length} Products Available
+                  {currentMilestone.checklist.length} {t.productsAvailable}
                  </span>
               </div>
             </div>
@@ -478,6 +558,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </main>
+      )}
 
       {/* Mobile Portal Modal */}
       {showQR && (
@@ -486,8 +567,8 @@ const App: React.FC = () => {
             <div className="w-20 h-20 bg-emerald-50 rounded-3xl flex items-center justify-center mx-auto mb-8 text-emerald-900">
               <QrCode size={40} />
             </div>
-            <h3 className="text-3xl font-serif font-bold mb-4 text-emerald-dark">Mobile Access</h3>
-            <p className="text-emerald-900/60 mb-10 text-sm leading-relaxed font-light italic">Sync your curated checklist for fast in-branch pharmacy fulfillment.</p>
+            <h3 className="text-3xl font-serif font-bold mb-4 text-emerald-dark">{t.mobileAccess}</h3>
+            <p className="text-emerald-900/60 mb-10 text-sm leading-relaxed font-light italic">{t.mobileSync}</p>
             
             <div className="bg-white p-8 border border-gray-100 rounded-[3rem] inline-block mb-10">
               <QRCodeSVG value={window.location.href} size={200} level="H" includeMargin={false} fgColor="#064e3b" />
@@ -502,7 +583,7 @@ const App: React.FC = () => {
               className="w-full py-5 bg-emerald-dark text-white rounded-full font-bold hover:bg-emerald transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs"
             >
               {copied ? <Check size={18} /> : <Copy size={18} />}
-              <span>{copied ? 'Link Copied' : 'Copy Access Link'}</span>
+              <span>{copied ? t.linkCopied : t.copyLink}</span>
             </button>
           </div>
         </div>
@@ -514,17 +595,19 @@ const App: React.FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-12 border-b border-white/10 pb-16 mb-12">
             <div className="flex items-center gap-4">
             <img src={logo} alt="Al Habib Pharmacy" className="h-14 w-auto object-contain brightness-0 invert" />
-              <h4 className="font-serif text-3xl font-bold">Al Habib <span className="text-emerald-300 italic font-light">Pharmacy</span></h4>
+              <h4 className="font-serif text-3xl font-bold">
+                {isRTL ? 'صيدلية الحبيب' : 'Al Habib Pharmacy'}
+              </h4>
             </div>
             <p className="text-emerald-100/60 text-lg font-light italic max-w-sm text-center md:text-right">
-              "Excellence in every beginning. Dedicated to the health of every mother and baby in our community."
+              "{t.footerQuote}"
             </p>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center text-emerald-100/40 text-[10px] tracking-[0.6em] uppercase font-bold gap-8">
-            <p>© {new Date().getFullYear()} Dr. Sulaiman Al Habib Medical Group. All Rights Reserved.</p>
+            <p>© {new Date().getFullYear()} {t.rightsReserved}</p>
             <div className="flex gap-12">
-              <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
-              <span className="hover:text-white cursor-pointer transition-colors">Safety Standards</span>
+              <span className="hover:text-white cursor-pointer transition-colors">{t.privacyPolicy}</span>
+              <span className="hover:text-white cursor-pointer transition-colors">{t.safetyStandards}</span>
             </div>
           </div>
         </div>
