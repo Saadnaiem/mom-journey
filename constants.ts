@@ -130,7 +130,8 @@ export const JOURNEY_DATA: Milestone[] = [
       { id: 's4-gear-1', name: 'Strollers / prams', category: 'Mobility & Big Gear', description: 'Comfortable transport for baby.' },
       { id: 's4-gear-2', name: 'Baby carriage systems', category: 'Mobility & Big Gear', description: 'Versatile travel solutions.' },
       { id: 's4-gear-3', name: 'Infant car seats', category: 'Mobility & Big Gear', description: 'Essential road safety.' },
-      { id: 's4-gear-4', name: 'Bassinets / cribs', category: 'Mobility & Big Gear', description: 'Safe sleep environments.' }
+      { id: 's4-gear-4', name: 'Bassinets / cribs', category: 'Mobility & Big Gear', description: 'Safe sleep environments.' },
+      { id: 's4-gear-5', name: 'Baby Prams', category: 'Mobility & Big Gear', description: 'Secure and comfortable travel for your newborn.' }
     ]
   },
   {
@@ -161,6 +162,7 @@ export const JOURNEY_DATA: Milestone[] = [
       { id: 's5-acc-5', name: 'Feeding bowls, spoons, bibs', category: 'Accessories & Development', description: 'Mealtime essentials.' },
       { id: 's5-acc-6', name: 'Activity mats', category: 'Accessories & Development', description: 'Stimulates large muscle movement.' },
       { id: 's5-acc-7', name: 'Developmental toys', category: 'Accessories & Development', description: 'Focuses on improved motor skills.' },
+      { id: 's5-acc-8', name: 'Bottle sterilizers', category: 'Accessories & Development', description: 'Ensures hygiene for bottles and pacifiers.' },
       { id: 's5-safe-1', name: 'Baby safety gates', category: 'Safety & Mobility', description: 'Secures hazardous areas.' },
       { id: 's5-safe-2', name: 'Cabinet & corner protectors', category: 'Safety & Mobility', description: 'Identifies and softens sharp edges.' },
       { id: 's5-safe-3', name: 'Baby monitors', category: 'Safety & Mobility', description: 'Keeps eyes/ears on baby anywhere.' },
@@ -187,6 +189,7 @@ export const JOURNEY_DATA: Milestone[] = [
       { id: 's6-hyg-2', name: 'Fluoride-free / low-fluoride toothpaste', category: 'Hygiene & Potty Training', description: 'Safe for swallowing during learning.' },
       { id: 's6-hyg-3', name: 'Diapers (Sizes 4-6) / Pull-ups', category: 'Hygiene & Potty Training', description: 'Transitioning to potty independence.' },
       { id: 's6-hyg-4', name: 'Potty training seats/chairs', category: 'Hygiene & Potty Training', description: 'Comfortable tools for training success.' },
+      { id: 's6-hyg-5', name: 'Bottle sterilizers', category: 'Hygiene & Potty Training', description: 'Keeps cups and bottles germ-free.' },
       { id: 's6-safe-1', name: 'Safety gates & latches', category: 'Safety & Home', description: 'Critical for active explorers.' },
       { id: 's6-safe-2', name: 'Corner guards', category: 'Safety & Home', description: 'Protects from bumps and falls.' }
     ]
